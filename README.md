@@ -1,5 +1,7 @@
 # cryptokit: Step-by-Step Cryptography in Python
 
+[![Tests](https://github.com/zanedoxford-hub/crypto-toolkit/actions/workflows/tests.yml/badge.svg)](https://github.com/zanedoxford-hub/crypto-toolkit/actions/workflows/tests.yml)
+
 A small Python toolkit that implements classic and public-key cryptography primitives **and shows the working**, the way you would on paper. I built it while studying Cryptography (3012ICT) at Griffith University and then cleaned it up into a tested package.
 
 > **For learning only.** These are textbook implementations (no padding schemes, no constant-time code, tiny parameters). Never use them to protect real data. Use a vetted library such as `cryptography` or `libsodium`.
