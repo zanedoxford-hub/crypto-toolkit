@@ -27,6 +27,16 @@ def test_index_of_coincidence_english_vs_random():
     assert ck.index_of_coincidence("abcdefghijklmnopqrstuvwxyz" * 10) < 0.045
 
 
+def test_kasiski_examination_finds_key_length():
+    plain = "it was the best of times it was the worst of times it was the age of wisdom it was the age of foolishness " * 3
+    cipher = ck.vigenere_cipher(plain, "LEMON")
+    result = ck.kasiski_examination(cipher)
+    assert result["repeats"]
+    assert all(d % 5 == 0 for ds in result["repeats"].values() for d in ds)
+    assert result["candidates"][0][0] == 5
+    assert ck.kasiski_examination("ABCDEFGHIJ")["candidates"] == []
+
+
 def test_xor_and_lfsr():
     assert ck.binary_xor("1010", "0110") == "1100"
     assert ck.lfsr_keystream([1, 0, 0], [0, 2], 7) == [0, 0, 1, 1, 1, 0, 1]
