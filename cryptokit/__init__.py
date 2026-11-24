@@ -1,7 +1,7 @@
 """cryptokit: step-by-step implementations of classic and public-key cryptography primitives for learning."""
 
 from .number_theory import gcd, extended_gcd_raw, get_mod_inverse, extended_gcd_verbose, square_and_multiply_verbose
-from .classical import caesar_cipher, vigenere_cipher, index_of_coincidence
+from .classical import caesar_cipher, vigenere_cipher, index_of_coincidence, kasiski_examination
 from .bits import binary_xor, lfsr_keystream
 from .padding import pkcs7_pad, pkcs7_unpad
 from .rsa import rsa_keygen, rsa_encrypt, rsa_decrypt, rsa_sign, rsa_verify

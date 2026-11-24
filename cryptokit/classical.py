@@ -1,4 +1,4 @@
-"""Classical ciphers and the Index of Coincidence statistic."""
+"""Classical ciphers, the Index of Coincidence statistic and Kasiski examination."""
 
 def caesar_cipher(text, shift, mode="encrypt"):
     """Encrypts or decrypts a string using a numeric Caesar shift (A=0, Z=25)."""
@@ -41,3 +41,37 @@ def index_of_coincidence(text):
         freqs[c] = freqs.get(c, 0) + 1
     sum_f = sum(f * (f - 1) for f in freqs.values())
     return sum_f / (n * (n - 1))
+
+
+def kasiski_examination(ciphertext, min_len=3, max_key_len=20):
+    """
+    Kasiski examination for guessing the key length of a Vigenere ciphertext.
+
+    Finds every repeated sequence of at least min_len letters, records the
+    distances between their occurrences, and counts how many of those
+    distances each candidate key length (2..max_key_len) divides.
+    The true key length (and its multiples) should divide most distances.
+
+    Returns a dict:
+      "repeats":    {sequence: [distances between consecutive occurrences]}
+      "candidates": [(key_length, count), ...] sorted by count, highest first
+    """
+    clean = "".join(c for c in ciphertext.upper() if c.isalpha())
+    positions = {}
+    for i in range(len(clean) - min_len + 1):
+        positions.setdefault(clean[i:i + min_len], []).append(i)
+
+    repeats = {}
+    for seq, pos in positions.items():
+        if len(pos) > 1:
+            repeats[seq] = [b - a for a, b in zip(pos, pos[1:])]
+
+    distances = [d for ds in repeats.values() for d in ds]
+    counts = {}
+    for k in range(2, max_key_len + 1):
+        hits = sum(1 for d in distances if d % k == 0)
+        if hits:
+            counts[k] = hits
+
+    candidates = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+    return {"repeats": repeats, "candidates": candidates}
